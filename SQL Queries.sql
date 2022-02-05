@@ -10,10 +10,10 @@ order by NumOfClients desc;
 -- розподіл клієнтів залежно від рівня ризику - лише активні клієнти та клієнти, які потребують переідентифікації
 with cte as (
 select id as ClientId,
-	   case when RiskLevel <= 40 then 'Íèçüêèé ð³âåíü ðèçèêó'
-			when RiskLevel <= 60 then 'Ñåðåäí³é ð³âåíü ðèçèêó'
-			when RiskLevel <= 95 then 'Âèñîêèé ð³âåíü ðèçèêó'
-			when RiskLevel > 95 then 'Çàõìàðíèé ð³âåíü ðèçèêó'
+	   case when RiskLevel <= 40 then 'Низький рівень ризику'
+			when RiskLevel <= 60 then 'Середній рівень ризику'
+			when RiskLevel <= 95 then 'Високий рівень ризику'
+			when RiskLevel > 95 then 'Захмарний рівень ризику'
 	   end as RiskLevelDescr	
 from dbo.tb_Clients
 where "Status" = 0 or "Status" = 2
@@ -24,7 +24,7 @@ from cte
 group by RiskLevelDescr
 order by NumOfClients;
 
--- кількість договорів в розрізі клієнта та валют - табличка, лише активні клієнти та клієнти, які потребують переідентифікації, при цьому клієнт має мати більш ніж один договір
+-- кількість договорів в розрізі клієнта та валют, лише активні клієнти та клієнти, які потребують переідентифікації, при цьому клієнт має мати більш ніж один договір
 select c.id as CLientId,
 	   c.lname,
 	   c.fname,
